@@ -1,0 +1,86 @@
+<Gerenciador>:
+    Menu:
+        name: 'menu'
+    Tarefas:
+        name: 'tarefas'
+
+<Menu>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(100)
+        spacing: dp(30)
+        canvas:
+            Color:
+                rgba: 1,1,1,1
+            Rectangle:
+                size: self.size
+                pos: self.pos
+                source: 'imgs/nature.jpg'
+        Image:
+            source: 'imgs/lance.png'
+            size_hint_y: None
+            height: dp(200)
+            allow_stretch:True
+        Botao:
+            text: 'Tarefas'
+            on_press: app.root.current = 'tarefas'
+        Botao:
+            text: 'assistente'
+        Botao:
+            text: 'sair'
+            on_press: app.stop()
+
+<Botao@ButtonBehavior+Label>: #@ é uma declaração de classe dinâmica
+    canvas.before:
+        Color:
+            rgba: 1, 0, 0, 0.8
+        Ellipse:
+            pos: self.pos
+            size: self.height, self.height
+        Ellipse:
+            pos: self.x + self.width-self.height, self.y
+            size: self.height, self.height
+        Rectangle:
+            pos: self.x+self.height/2, self.y
+            size: self.width-self.height, self.height
+
+<Tarefas>:
+    BoxLayout:
+        orientation: 'vertical'
+        ActionBar:
+            ActionView:
+                ActionPrevious:
+                    title: 'tarefas'
+                    on_press: app.root.current = 'menu'
+                ActionButton:
+                    text: 'sair'
+                    on_press: app.stop()
+        ScrollView:
+            BoxLayout:
+                id: box
+                orientation: 'vertical'
+                size_hint_y: None
+                height: self.minimum_height
+        BoxLayout:
+            size_hint_y: None
+            height: dp(60)
+            TextInput:
+                id: text
+            Button
+                text: '+'
+                size_hint_x: None
+                width: 60
+                on_press: root.addwidget()
+
+<Tarefa>:
+    size_hint_y: None
+    height: dp(200)
+    Label:
+        id: cancelar
+        font_size: dp(30)
+    Button:
+        text: 'x'
+        size_hint_x: None
+        width: 60
+        color: 1,0,0,1
+        on_press: app.root.get_screen('tarefas').ids.box.remove_widget(root)
